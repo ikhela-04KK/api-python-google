@@ -1,16 +1,23 @@
-# api qui permet de voir l'historique youtube des utilisateurs en live et de les télécharger directement
+
 # actuellement je suis les videos afin de mieux comprendre les proccessus eet de faire en sorte de m'inprgner d ela situation
 from googleapiclient.discovery import build
 #import os
 import re 
 from datetime import timedelta
 from pytube import YouTube
-
+# from dotenv import load_dotenv
 
 """
 activer la sauvegarde automatique 
-creer une fonction qui transforme l'id d'une video en nom 
+creer une fonction qui transforme l'id d'une video en nom:ok
+je dois inserer les barres de téléchargement , pour qu'il me montre la duréée du téléchargement en cours: ok
+il y'a une partie ou l'on peut reccuperer les tailles des videos 
+est ce que je vais pas combiner avec un dictionaire je me dis que ça sera mieux 
+mettre ça clé dans un environnement c'est mieux :ok
 """
+
+
+
 
 #début de la construction 
 api_key = "AIzaSyClWLgcJQMhWu3BzDo9Ks7lvfSkgm_nT-w"
@@ -74,8 +81,12 @@ def downloads_playlist(id_videos,videos,playlists):#appelle de la playlist downl
             #le dossier de télechargement
             path = "C:\\Users\\ikhela\\videos\\"
         
-            #telecharger les videos 
-            video.download(output_path=path)
+            #telecharger les videos et la progress bar ²
+            #video.download(output_path=path)
+            video.on_progress = lambda chunk, file_handle, bytes_remaining: tqdm.update("{:.2f} %".format((1-bytes_remaining/stream.filesize)*100))
+            video.download(output_path=output_path, filename=stream.default_filename)
+
+                        
     
 
 
@@ -160,5 +171,4 @@ print(f'{heure}:{minute}:{secondes}')
 
 
 #implementer une fonction pour telecharger directement les videos de ta playist 
-
 
